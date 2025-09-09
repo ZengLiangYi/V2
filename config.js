@@ -265,7 +265,7 @@ class ConfigManager {
                 },
                 "V3视觉设计工程师": {
                     id: "V3视觉设计工程师",
-                    name: "电气设计<br>工程师",
+                    name: "V3视觉设计<br>工程师",
                     description: "V3视觉设计工程师",
                     cost: 3,
                     position: { x: 400, y: 0 },
