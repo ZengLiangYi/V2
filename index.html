@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V3视觉设计工程师 - 岗位技能树</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="background-layer"></div>
+    <div class="container"> 
+         <!-- 固定在左上角的重置按钮 -->
+        <button id="resetBtn" class="reset-btn">
+            <i class="fas fa-undo"></i>
+            重置技能树
+        </button>
+
+        <h1>岗位技能树</h1>
+        <!-- 技能树容器将由JavaScript动态生成 -->
+        <div id="skillTreeContainer"></div>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="config.js"></script>
+    <script src="skill-tree.js"></script>
+    <script>
+        // 技能树初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // 创建配置管理器
+                const configManager = new ConfigManager();
+                const config = configManager.getConfig('electrical');
+                
+                // 验证配置
+                const errors = configManager.validateConfig(config);
+                if (errors.length > 0) {
+                    console.error('配置验证失败:', errors);
+                    return;
+                }
+                
+                // 生成HTML并插入到容器中
+                const container = document.getElementById('skillTreeContainer');
+                container.innerHTML = configManager.generateHTML(config);
+                
+                // 初始化技能树
+                const skillTree = new SkillTree('electrical');
+                window.skillTree = skillTree; // 全局暴露以便调试
+                
+                console.log('✅ 技能树初始化成功');
+                console.log('📋 当前配置:', config);
+                
+            } catch (error) {
+                console.error('❌ 技能树初始化失败:', error);
+                document.getElementById('skillTreeContainer').innerHTML = 
+                    '<div style="color: red; text-align: center; padding: 50px;">技能树加载失败，请检查配置</div>';
+            }
+        });
+    </script>
+</body>
+</html>

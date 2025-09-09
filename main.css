@@ -1,0 +1,429 @@
+/* 主样式文件 */
+@import url('variables.css');
+
+/* 基础重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 基础样式 */
+body {
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  background: var(--background-color);
+  color: var(--text-primary);
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  /* 移动端优化 */
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 背景图层 */
+.background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('img/bg.png') no-repeat center center;
+  background-size: cover;
+  z-index: var(--z-background);
+  pointer-events: none;
+}
+
+/* 容器布局 */
+.container {
+  max-width: 62.5rem;
+  margin: 0 auto;
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 页面标题 */
+h1 {
+  color: var(--text-primary);
+  font-size: clamp(4rem, 10vw, 7rem);
+  margin: calc(var(--spacing-xxl) * 2) 0 calc(var(--spacing-md));
+  text-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+/* 重置按钮 */
+.reset-btn {
+  position: fixed;
+  top: var(--spacing-md);
+  left: var(--spacing-md);
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: var(--text-primary);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-medium);
+  z-index: var(--z-modal);
+  backdrop-filter: blur(0.625rem);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.reset-btn:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: var(--shadow-heavy);
+}
+
+/* 技能树容器 */
+.skill-tree-container {
+  position: relative;
+  width: 64rem;
+  height: 80rem;
+  margin-top: var(--spacing-xxl);
+  overflow: visible;
+}
+
+/* Canvas连接线 */
+.connection-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-canvas);
+  pointer-events: none;
+}
+
+/* 技能行布局 */
+.skill-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 5rem;
+  position: relative;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  min-height: 7.5rem;
+}
+
+/* 技能节点基础样式 */
+.skill-node {
+  position: relative;
+  width: var(--node-size-mobile);
+  height: var(--node-size-mobile);
+  background: var(--node-default);
+  border-radius: var(--radius-circle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 0.125rem solid var(--node-border-default);
+  z-index: var(--z-nodes);
+  transition: all var(--transition-normal);
+  /* 移动端触摸优化 */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* 技能节点状态 */
+.skill-node.available {
+  opacity: 1;
+  border-color: var(--node-border-available);
+  background: var(--node-available);
+}
+
+.skill-node.unlocked {
+  background: var(--node-unlocked);
+  opacity: 1;
+  border-color: var(--node-border-unlocked);
+}
+
+/* 大师技能样式 */
+.skill-node.master-skill {
+  width: var(--node-size-master);
+  height: var(--node-size-master);
+  border: 0.125rem solid var(--node-border-unlocked);
+}
+
+.skill-node.master-skill.unlocked {
+  background: var(--node-unlocked);
+}
+
+/* 最终大师技能 */
+.skill-node.final-master {
+  width: var(--node-size-final-master) !important;
+  height: var(--node-size-final-master) !important;
+  background: var(--node-default);
+  /* 外层边框 */
+  border: 3px solid var(--node-border-unlocked);
+  box-shadow: var(--shadow-glow);
+  position: relative;
+}
+
+/* 使用伪元素创建内层边框，实现双线效果 */
+.skill-node.final-master::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 3px solid var(--node-border-unlocked);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.skill-node.final-master.available {
+  border-color: var(--node-border-available);
+  background: var(--node-available);
+  box-shadow: 0 0 1.5625rem rgba(0, 255, 127, 0.4);
+}
+
+.skill-node.final-master.available::before {
+  border-color: var(--node-border-available);
+}
+
+.skill-node.final-master.unlocked {
+  border-color: var(--node-border-unlocked);
+  background: var(--node-unlocked);
+  box-shadow: 0 0 1.875rem rgba(235, 97, 1, 0.8);
+}
+
+.skill-node.final-master.unlocked::before {
+  border-color: var(--node-border-unlocked);
+}
+
+/* 最终大师技能内部布局 */
+.skill-node.final-master .skill-icon {
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: var(--spacing-xs);
+}
+
+.skill-node.final-master .skill-icon img {
+  max-width: 5rem;
+  max-height: 5rem;
+  flex-shrink: 0;
+}
+
+.skill-node.final-master .skill-name {
+  position: static;
+  transform: none;
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-align: center;
+  min-width: auto;
+  font-weight: bold;
+}
+
+/* 技能图标 */
+.skill-icon {
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  text-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 80%;
+  padding: var(--spacing-sm);
+  box-sizing: border-box;
+  opacity: 0.5;
+}
+
+.skill-node.available .skill-icon,
+.skill-node.unlocked .skill-icon {
+  opacity: 1;
+}
+
+.skill-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* 技能名称 */
+.skill-name {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--spacing-xs);
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  min-width: 7.5rem;
+  z-index: var(--z-skill-names);
+  /* 添加半透明背景，与主题色协调 */
+  /* background: rgba(160, 82, 45, 0.8); */
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(4px);
+  /* 添加微妙的边框 */
+  /* border: 1px solid rgba(255, 255, 255, 0.2); */
+}
+
+.skill-node.available .skill-name,
+.skill-node.unlocked .skill-name {
+  color: var(--text-primary);
+}
+
+/* 可用技能名称背景 */
+.skill-node.available .skill-name {
+  background: rgba(0, 255, 127, 0.2);
+  border-color: rgba(0, 255, 127, 0.4);
+}
+
+/* 已解锁技能名称背景 */
+.skill-node.unlocked .skill-name {
+  background: rgba(235, 97, 1, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* 技能描述（隐藏，使用tooltip代替） */
+.skill-description {
+  display: none;
+}
+
+/* 工具提示 */
+.tooltip {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--text-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  pointer-events: none;
+  z-index: var(--z-tooltip);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+  max-width: 12.5rem;
+  text-align: center;
+}
+
+.tooltip.show {
+  opacity: 1;
+}
+
+/* 消息提示 */
+.success-message,
+.error-message {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  color: var(--text-primary);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: bold;
+  z-index: var(--z-modal);
+  opacity: 0;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-heavy);
+  max-width: 18.75rem;
+}
+
+.success-message {
+  background: linear-gradient(45deg, #4facfe, #00f2fe);
+}
+
+.error-message {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+}
+
+.success-message.show,
+.error-message.show {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* 响应式设计 */
+@media (min-width: 48rem) {
+  .skill-node {
+    width: var(--node-size-desktop);
+    height: var(--node-size-desktop);
+  }
+  
+  .skill-icon {
+    font-size: 2.2rem;
+    padding: var(--spacing-md);
+  }
+  
+  .skill-name {
+    font-size: 1.2rem;
+    margin-top: var(--spacing-xs);
+    min-width: 8.75rem;
+  }
+  
+  .skill-row {
+    margin-bottom: 6.25rem;
+    gap: var(--spacing-xxl);
+    min-height: 8.75rem;
+  }
+  
+  .skill-node.final-master {
+    width: 15rem !important;
+    height: 15rem !important;
+  }
+  
+  .skill-node.final-master .skill-icon img {
+    max-width: 5.625rem;
+    max-height: 5.625rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  .reset-btn {
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: var(--spacing-xs) 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .skill-row {
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xxl);
+  }
+  
+  .skill-node.master-skill {
+    width: var(--node-size-tablet);
+    height: var(--node-size-tablet);
+  }
+}
+
+@media (max-width: 30rem) {
+  .skill-node {
+    width: 4.375rem;
+    height: 4.375rem;
+  }
+  
+  .skill-icon {
+    font-size: 1rem;
+  }
+  
+  .skill-name {
+    font-size: 0.5rem;
+  }
+  
+  .skill-row {
+    gap: var(--spacing-sm);
+    margin-bottom: 2.5rem;
+  }
+  
+  .skill-node.master-skill {
+    width: 5.625rem;
+    height: 5.625rem;
+  }
+}

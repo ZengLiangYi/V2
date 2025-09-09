@@ -1,0 +1,68 @@
+/* CSS变量定义 - 统一管理颜色、尺寸等 */
+:root {
+  /* 主题颜色 */
+  --primary-color: #EB6101;
+  --primary-dark: #A0522D;
+  --accent-color: #00FF7F;
+  --background-color: #EB6101;
+  
+  /* 技能节点状态颜色 */
+  --node-default: #A0522D;
+  --node-available: #DF6628;
+  --node-unlocked: #EB6101;
+  --node-border-default: rgba(255, 255, 255, 0.5);
+  --node-border-available: #00FF7F;
+  --node-border-unlocked: white;
+  
+  /* 文字颜色 */
+  --text-primary: white;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  
+  /* 尺寸变量 */
+  --node-size-mobile: 5rem;
+  --node-size-tablet: 8rem;
+  --node-size-desktop: 8rem;
+  --node-size-master: 15rem;
+  --node-size-final-master: 15rem;
+  
+  /* 间距变量 */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.9375rem;
+  --spacing-md: 1.25rem;
+  --spacing-lg: 1.875rem;
+  --spacing-xl: 2.5rem;
+  --spacing-xxl: 3.125rem;
+  
+  /* 响应式断点 */
+  --breakpoint-mobile: 30rem;
+  --breakpoint-tablet: 48rem;
+  --breakpoint-desktop: 75rem;
+  
+  /* 动画变量 */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.6s ease;
+  
+  /* 阴影变量 */
+  --shadow-light: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.2);
+  --shadow-heavy: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 1.25rem rgba(235, 97, 1, 0.6);
+  
+  /* 边框半径 */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.9375rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5625rem;
+  --radius-circle: 50%;
+  
+  /* Z-index层级 */
+  --z-background: -10;
+  --z-canvas: 1;
+  --z-content: 2;
+  --z-nodes: 10;
+  --z-skill-names: 15;
+  --z-tooltip: 1000;
+  --z-modal: 1001;
+}
